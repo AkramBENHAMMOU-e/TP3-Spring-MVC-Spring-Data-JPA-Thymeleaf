@@ -19,9 +19,9 @@ public class Tp3SpringMvcThymleafApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Patient patient = new Patient().builder().nom("yasine").dateNaissance(new Date()).malade(true).score(0).build();
-        Patient patient1 = new Patient().builder().nom("ahmed").dateNaissance(new Date()).malade(false).score(0).build();
-        Patient patient2 = new Patient().builder().nom("hanane").dateNaissance(new Date()).malade(true).score(0).build();
+        Patient patient = new Patient().builder().nom("yasine").dateNaissance(new Date()).malade(true).score(110).build();
+        Patient patient1 = new Patient().builder().nom("ahmed").dateNaissance(new Date()).malade(false).score(120).build();
+        Patient patient2 = new Patient().builder().nom("hanane").dateNaissance(new Date()).malade(true).score(130).build();
         patientRepository.save(patient);
         patientRepository.save(patient1);
         patientRepository.save(patient2);

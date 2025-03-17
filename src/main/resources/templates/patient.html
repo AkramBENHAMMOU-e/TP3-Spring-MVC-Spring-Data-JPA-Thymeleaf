@@ -43,6 +43,9 @@ layout:decorate="template1"
                 <td><a onclick="return confirm('Etes vous sur ?')" th:href="@{delete(id=${p.id}, keyword = ${keyword},page = ${currentPage})}" class="btn btn-danger">
                     <i class="bi bi-trash"></i>
                 </a></td>
+                <td><a th:href="@{editPatients(id=${p.id}, keyword = ${keyword},page = ${currentPage})}" class="btn btn-success">
+                    <i class="bi bi-pencil"></i>
+                </a></td>
             </tr>
             </thead>
         </table>
