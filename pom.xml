@@ -75,6 +75,12 @@
             <artifactId>bootstrap-icons</artifactId>
             <version>1.11.3</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/nz.net.ultraq.thymeleaf/thymeleaf-layout-dialect -->
+        <dependency>
+            <groupId>nz.net.ultraq.thymeleaf</groupId>
+            <artifactId>thymeleaf-layout-dialect</artifactId>
+        </dependency>
+
 
         <!-- https://mvnrepository.com/artifact/org.webjars/bootstrap -->
         <dependency>
