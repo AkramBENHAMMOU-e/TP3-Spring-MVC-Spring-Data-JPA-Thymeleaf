@@ -19,7 +19,7 @@ import java.util.List;
 @Controller @AllArgsConstructor
 public class PatientController {
     private PatientRepository patientRepository;
-    @GetMapping("/index")
+    @GetMapping("/user/index")
     public String index(Model model ,
                         @RequestParam(name ="page", defaultValue = "0") int p,
                         @RequestParam(name ="size", defaultValue = "4")  int s,
@@ -32,25 +32,25 @@ public class PatientController {
         return "patient";
     }
 
-    @GetMapping("/delete")
+    @GetMapping("/admin/delete")
     public String delete(Long id, String keyword, int page) {
         patientRepository.deleteById(id);
-        return "redirect:/index?page="+page+"&keyword="+keyword;
+        return "redirect:/user/index?page="+page+"&keyword="+keyword;
     }
 
-    @GetMapping("/patients")
+    @GetMapping("/admin/patients")
     @ResponseBody
 public List<Patient> listPatients() {
         return patientRepository.findAll();
     }
 
-@GetMapping("/formPatients")
+@GetMapping("/admin/formPatients")
 public String formPatient(Model model) {
         model.addAttribute("patient", new Patient());
         return "formPatients";
     }
 
-    @GetMapping("/editPatients")
+    @GetMapping("/admin/editPatients")
     public String editPatients(Model model, Long id,String keyword,int page) {
         Patient patient = patientRepository.findById(id).orElse(null);
         if (patient == null) {throw new RuntimeException("Patient not found");}
@@ -60,16 +60,16 @@ public String formPatient(Model model) {
         return "editPatients";
     }
 
-@PostMapping("/save")
+@PostMapping("/admin/save")
 public String savePatient(Model model, @Valid Patient patient , BindingResult bandingResult,@RequestParam(defaultValue = "") String keyword,@RequestParam(defaultValue = "0") int page) {
         if (bandingResult.hasErrors()) return "formPatients";
         patientRepository.save(patient);
-        return "redirect:/index?page="+page+"&keyword="+keyword;
+        return "redirect:/user/index?page="+page+"&keyword="+keyword;
         }
 
         @GetMapping("/")
     public String home() {
-        return "redirect:/index";
+        return "redirect:/user/index";
         }
         }
 
