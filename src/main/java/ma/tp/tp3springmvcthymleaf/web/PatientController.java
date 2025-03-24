@@ -19,7 +19,7 @@ import java.util.List;
 @Controller @AllArgsConstructor
 public class PatientController {
     private PatientRepository patientRepository;
-    @GetMapping("/index")
+    @GetMapping("/")
     public String index(Model model ,
                         @RequestParam(name ="page", defaultValue = "0") int p,
                         @RequestParam(name ="size", defaultValue = "4")  int s,
