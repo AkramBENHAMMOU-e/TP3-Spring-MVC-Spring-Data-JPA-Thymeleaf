@@ -44,6 +44,7 @@
                     .authorizeHttpRequests(ar->ar.requestMatchers("/webjars/**", "/h2-console/**").permitAll())
                     .authorizeHttpRequests(ar->ar.requestMatchers("/user/**").hasRole("USER"))
                     .authorizeHttpRequests(ar->ar.anyRequest().authenticated())
+                    .exceptionHandling(eh->eh.accessDeniedPage("/notAuthorized"))
                     .build();
         }
     }

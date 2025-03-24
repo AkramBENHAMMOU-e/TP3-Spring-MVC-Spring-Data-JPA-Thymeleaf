@@ -354,3 +354,118 @@ Le projet utilise plusieurs dépendances clés:
 
 ## Conclusion
 Ce projet démontre une implémentation complète d'une application web CRUD basée sur Spring MVC et Thymeleaf. Il intègre les bonnes pratiques de développement avec Spring Boot, incluant la séparation des couches, la validation des données, et une interface utilisateur responsive. Cette application peut servir de base pour le développement de systèmes plus complexes de gestion dans le domaine médical.
+ 
+
+## Sécurité et Authentification
+
+### Configuration de Sécurité
+L'application utilise Spring Security pour gérer l'authentification et l'autorisation des utilisateurs. Les fonctionnalités de sécurité incluent :
+
+- **Authentification In-Memory**
+    - Trois utilisateurs préconfigurés :
+        - `user1` (rôle USER)
+        - `user2` (rôle USER)
+        - `admin` (rôles USER et ADMIN)
+    - Mot de passe par défaut : `1234`
+
+- **Contrôle d'Accès**
+    - Routes protégées :
+        - `/admin/**` : Accessible uniquement aux utilisateurs avec rôle ADMIN
+        - `/user/**` : Accessible aux utilisateurs avec rôle USER
+        - `/` et `/login` : Accessible à tous
+        - Pages statiques (CSS, JS) : Accessibles à tous
+
+- **Fonctionnalités de Sécurité**
+    - Formulaire de login personnalisé
+    - Option de "Remember Me"
+    - Gestion des accès non autorisés
+    - Protection contre les accès non authentifiés
+
+### Captures d'écran de Sécurité
+
+#### Page de Login
+![Login Page](screenshots/login.png)
+- Formulaire de connexion personnalisé
+- Validation des credentials
+- Option "Remember Me"
+
+#### Accès Non Autorisé
+![Not Authorized Page](screenshots/not_authorized.png)
+- Message d'erreur lors d'une tentative d'accès non autorisé
+- Redirection vers une page d'erreur
+
+### Configuration Détaillée
+
+#### Utilisateurs Configurés
+```java
+@Bean
+public InMemoryUserDetailsManager inMemoryUserDetailsManager(PasswordEncoder passwordEncoder){
+    return new InMemoryUserDetailsManager(
+        User.withUsername("user1").password(encodedPassword).roles("USER").build(),
+        User.withUsername("user2").password(encodedPassword).roles("USER").build(),
+        User.withUsername("admin").password(encodedPassword).roles("USER","ADMIN").build()
+    );
+}
+```
+
+#### Filtres de Sécurité
+```java
+@Bean
+public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    return httpSecurity
+        .formLogin(form -> form
+            .loginPage("/login")
+            .defaultSuccessUrl("/", true)
+            .permitAll()
+        )
+        .rememberMe(rm -> rm
+            .key("uniqueAndSecret")
+            .tokenValiditySeconds(7 * 24 * 60 * 60)
+        )
+        .authorizeHttpRequests(ar -> {
+            ar.requestMatchers("/deletePatient/**").hasRole("ADMIN")
+              .requestMatchers("/admin/**").hasRole("ADMIN")
+              .requestMatchers("/", "/login", "/css/**", "/js/**").permitAll()
+              .requestMatchers("/user/**").hasRole("USER")
+              .anyRequest().authenticated();
+        })
+        .build();
+}
+```
+
+## Dépendances Maven pour la Sécurité
+Pour activer la sécurité, j'ai ajouté les dépendances suivantes :
+```xml
+<dependencies>
+    
+    <!-- Spring Boot Starter pour Security -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+    
+    <!-- Thymeleaf Extras pour Spring Security -->
+    <dependency>
+        <groupId>org.thymeleaf.extras</groupId>
+        <artifactId>thymeleaf-extras-springsecurity6</artifactId>
+        <version>3.1.3.RELEASE</version>
+    </dependency>
+</dependencies>
+```
+
+Dans cette mise à jour, j'ai ajouté deux dépendances importantes pour la sécurité :
+1. `spring-boot-starter-security` : Ajoute les fonctionnalités de sécurité de Spring
+2. `thymeleaf-extras-springsecurity6` : Fournit des extensions Thymeleaf pour intégrer Spring Security dans les templates
+
+Ces dépendances permettent :
+- La configuration de la sécurité
+- L'authentification et l'autorisation
+- L'intégration avec Thymeleaf pour les expressions de sécurité
+
+Je conserve les autres dépendances déjà présentes, et j'ajoute simplement ces deux nouvelles entrées.
+
+## Références Techniques
+- Spring Security 6.x
+- Authentification In-Memory
+- Gestion des rôles et autorisations
+- Protection contre les accès non autorisés
