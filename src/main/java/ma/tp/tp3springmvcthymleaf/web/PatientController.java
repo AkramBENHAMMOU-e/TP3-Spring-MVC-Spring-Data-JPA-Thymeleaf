@@ -19,7 +19,7 @@ import java.util.List;
 @Controller @AllArgsConstructor
 public class PatientController {
     private PatientRepository patientRepository;
-    @GetMapping("/")
+    @GetMapping("/index")
     public String index(Model model ,
                         @RequestParam(name ="page", defaultValue = "0") int p,
                         @RequestParam(name ="size", defaultValue = "4")  int s,
@@ -65,6 +65,11 @@ public String savePatient(Model model, @Valid Patient patient , BindingResult ba
         if (bandingResult.hasErrors()) return "formPatients";
         patientRepository.save(patient);
         return "redirect:/index?page="+page+"&keyword="+keyword;
+        }
+
+        @GetMapping("/")
+    public String home() {
+        return "redirect:/index";
         }
         }
 

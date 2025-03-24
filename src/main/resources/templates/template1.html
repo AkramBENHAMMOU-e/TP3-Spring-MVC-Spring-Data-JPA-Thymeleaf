@@ -38,11 +38,13 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
         </ul>
         <ul class="navbar-nav ms-auto">
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    [Username]
+                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                th:text="${#authentication.name}">
+
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" th:href="@{/formPatients}">Logout</a>
+                    <a class="dropdown-item" th:href="@{/logout}">Logout</a>
+                    <a class="dropdown-item" href="#">Profil</a>
 
                 </div>
             </li>
